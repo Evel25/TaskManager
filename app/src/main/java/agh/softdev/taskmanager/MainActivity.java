@@ -3,6 +3,7 @@ package agh.softdev.taskmanager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -25,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
         taskViewModel.getAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
-                // set the data to the activity
-                Toast.makeText(MainActivity.this, "Data has been changed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "The Database Is Created And Data Has Been Changer", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }
