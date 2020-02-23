@@ -17,6 +17,7 @@ import agh.softdev.taskmanager.database.entities.Task;
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskHolder> {
 
     private List<Task> tasks = new ArrayList<>();
+    private onItemClickListener listener;
 
     @NonNull
     @Override
@@ -53,6 +54,23 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskHolder> 
             super(itemView);
             this.taskName = itemView.findViewById(R.id.taskName);
             this.taskDesc = itemView.findViewById(R.id.taskDesc);
+            // add the on click listener on the recycler item
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null && getAdapterPosition() != RecyclerView.NO_POSITION){
+                        listener.onIemClick(tasks.get(getAdapterPosition()));
+                    }
+                }
+            });
         }
+    }
+
+    public interface onItemClickListener{
+        public void onIemClick(Task task);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener){
+        this.listener = listener;
     }
 }

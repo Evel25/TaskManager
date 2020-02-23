@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.List;
 
 import agh.softdev.taskmanager.adapter.TasksAdapter;
@@ -80,6 +81,19 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(tasksRecycler);
 
+        // add the click listner functionality
+        tasksAdapter.setOnItemClickListener(new TasksAdapter.onItemClickListener() {
+            @Override
+            public void onIemClick(Task task) {
+                // create the intent
+                Intent editeTask = new Intent(MainActivity.this,AddTask.class);
+                editeTask.putExtra("title",task.getTitle());
+                editeTask.putExtra("desc",task.getDesctiprion());
+                editeTask.putExtra("id",task.getId());
+                startActivityForResult(editeTask,105);
+            }
+        });
+
     }
 
     // add the menu to the app main activity
@@ -112,7 +126,20 @@ public class MainActivity extends AppCompatActivity {
             Task task = new Task(taskName,taskDesc);
             taskViewModel.insert(task);
             Toast.makeText(this, "Your Task Is Added", Toast.LENGTH_SHORT).show();
-        }else {
+        }else if(requestCode == 105 && resultCode == RESULT_OK){
+            int id = data.getIntExtra("id",-1);
+            if(id < 0){
+                Toast.makeText(this, "Could Not Update The Task", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String taskName = data.getStringExtra("name");
+            String taskDesc = data.getStringExtra("desc");
+            Task updateTask = new Task(taskName,taskDesc);
+            updateTask.setId(id);
+            taskViewModel.update(updateTask);
+            Toast.makeText(this, "Task Has Been Updated", Toast.LENGTH_SHORT).show();
+        }
+        else {
             Toast.makeText(this, "Failed To Add Your Task", Toast.LENGTH_SHORT).show();
         }
     }

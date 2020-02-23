@@ -44,7 +44,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/newTaskDesc"
         android:layout_marginTop="20dp"
-        android:text="Add Task"/>
+        android:text="Save Task"/>
 
     <Button
         android:id="@+id/btnCancelTask"

@@ -26,16 +26,22 @@ public class AddTask extends AppCompatActivity {
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = newTaskDesc.getText().toString();
+                String name = newTaskName.getText().toString();
                 String desc = newTaskDesc.getText().toString();
                 if(name.isEmpty() || desc.isEmpty()){
                     Toast.makeText(AddTask.this, "Please Enter Both The Task Name And Description", Toast.LENGTH_LONG).show();
                     return;
                 }
 
+                int id = getIntent().getIntExtra("id",-1);
+
                 Intent intent = new Intent();
                 intent.putExtra("name",name);
                 intent.putExtra("desc",desc);
+                if(id > 0){
+                    // send back the id field to be used for the update process
+                    intent.putExtra("id",id);
+                }
                 setResult(RESULT_OK,intent);
                 finish();
             }
@@ -47,5 +53,12 @@ public class AddTask extends AppCompatActivity {
                 finish();
             }
         });
+
+        // set up  the layout for the update event
+        int id = getIntent().getIntExtra("id",-1);
+        if(id > 0){
+            newTaskName.setText(getIntent().getStringExtra("title"));
+            newTaskDesc.setText(getIntent().getStringExtra("desc"));
+        }
     }
 }
