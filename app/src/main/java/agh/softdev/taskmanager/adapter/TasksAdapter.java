@@ -36,6 +36,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskHolder> 
         return tasks.size();
     }
 
+    public Task getTask(int position){
+        return tasks.get(position);
+    }
+
     public void setTasks(List<Task> tasks){
         this.tasks = tasks;
         this.notifyDataSetChanged();

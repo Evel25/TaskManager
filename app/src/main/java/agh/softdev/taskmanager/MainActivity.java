@@ -1,15 +1,20 @@
 package agh.softdev.taskmanager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView tasksRecycler;
     private TasksAdapter tasksAdapter;
     private FloatingActionButton addTask;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // support the swipe action for the recyclerview items
+        // allowing to delete a single swaped item
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT| ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                taskViewModel.delete(tasksAdapter.getTask(viewHolder.getAdapterPosition()));
+                Toast.makeText(MainActivity.this, "Task Is Deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(tasksRecycler);
+
+    }
+
+    // add the menu to the app main activity
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = new MenuInflater(this);
+        menuInflater.inflate(R.menu.tasks_menu,menu);
+
+        return true;
+    }
+
+    // override this methode for the menu item selected action
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.deleteAllTasks:
+                taskViewModel.deleteAll();
+                Toast.makeText(this, "All The Tasks Are Removed", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
