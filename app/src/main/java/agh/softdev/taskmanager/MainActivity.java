@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Task Has Been Updated", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(this, "Failed To Add Your Task", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
         }
     }
 }
